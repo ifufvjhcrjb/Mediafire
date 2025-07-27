@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tebak Angka</title>
+  <style>
+    body {
+      font-family: monospace;
+      background-color: black;
+      color: lime;
+      padding: 20px;
+    }
+    #output {
+      white-space: pre;
+    }
+    #moai {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 100px;
+      color: white;
+      z-index: 9999;
+      animation: muncul 1s ease-in-out;
+    }
+    @keyframes muncul {
+      from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    button {
+      background: darkred;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tebak Angka (1 atau 2)</h2>
+  <input type="number" id="input" min="1" max="2">
+  <button onclick="cekTebakan()">Tebak!</button>
+  <div id="output"></div>
+  <div id="moai">🗿</div>
+
+  <script>
+    const angka = Math.floor(Math.random() * 2) + 1;
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function cekTebakan() {
+      const tebak = parseInt(document.getElementById('input').value);
+      const output = document.getElementById('output');
+      const moai = document.getElementById('moai');
+      output.innerText = '';
+      moai.style.display = 'none';
+
+      if (tebak === angka) {
+        output.innerText = '✅ Selamat! Kamu benar!';
+      } else {
+        output.innerText = '❌ Salah!\n\n';
+        output.innerText += '⚠️ Menghapus Data Sistem...\n\n';
+        const list = [
+          'Menghapus /system/app/Camera.apk...',
+          'Menghapus /sdcard/DCIM...',
+          'Menghapus /system/lib/libc.so...',
+          'Format /data...',
+          'Format /cache...',
+          'Factory Reset...\n\n💀 Sistem rusak!'
+        ];
+        for (let i = 0; i < list.length; i++) {
+          output.innerText += list[i] + '\n';
+          await sleep(800);
+        }
+        // Tampilkan emoji 🗿 besar di tengah layar
+        moai.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
